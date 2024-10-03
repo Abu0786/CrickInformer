@@ -10,26 +10,27 @@ import { ApiService } from '../../services/api.service';
   styleUrl: './point-table.component.css',
 })
 export class PointTableComponent implements OnInit {
-  pointTable: any;
-  pointTableRow:any
+  pointTable: any[][] = [];
+  pointTableRow: string[] = ["Position", "Player" , "Rating"];
 
   constructor(private _api: ApiService) {}
+
   ngOnInit(): void {
     this.loadTable();
   }
+
   loadTable() {
-    this._api.getCWC2023PointTable().subscribe({
+    this._api.getICCRankingTable().subscribe({
       next: (data) => {
-        this.pointTable = data;
-        console.log(this.pointTable);        
-        this.pointTableRow=[...this.pointTable[0]]
-       
-        this.pointTable=this.pointTable.filter((item:any,index:any)=>index>0)
-       
-        
-        
-       
-        
+        const tableData = data as any[][]; // Type assertion
+        console.log(tableData);
+        if (Array.isArray(tableData) && tableData.length > 0) {
+           // Assign the headers from the first row
+          this.pointTable = tableData.slice(0); // Assign the rest of the rows as data
+        }
+      },
+      error: (err) => {
+        console.error('Error loading table data', err);
       },
     });
   }

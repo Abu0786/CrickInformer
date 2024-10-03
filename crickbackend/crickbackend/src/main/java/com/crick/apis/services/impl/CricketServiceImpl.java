@@ -86,43 +86,53 @@ public class CricketServiceImpl implements CricketService {
     }
 
     @Override
-    public List<List<String>> getCWC2023PointTable() {
-        List<List<String>> pointTable = new ArrayList<>();
-        String tableURL = "https://www.cricbuzz.com/cricket-series/6732/icc-cricket-world-cup-2023/points-table";
+    public List<List<String>> getIccRanking() {
+        List<List<String>> ranking = new ArrayList<>();
+        String rankingUrl = "https://www.cricbuzz.com/cricket-stats/icc-rankings/men/batting";
+
         try {
-            Document document = Jsoup.connect(tableURL).get();
-            Elements table = document.select("table.cb-srs-pnts");
-            Elements tableHeads = table.select("thead>tr>*");
-            List<String> headers = new ArrayList<>();
-            tableHeads.forEach(element -> {
-                headers.add(element.text());
-            });
-            pointTable.add(headers);
-            Elements bodyTrs = table.select("tbody>*");
-            bodyTrs.forEach(tr -> {
-                List<String> points = new ArrayList<>();
-                if (tr.hasAttr("class")) {
-                    Elements tds = tr.select("td");
-                    String team = tds.get(0).select("div.cb-col-84").text();
-                    points.add(team);
-                    tds.forEach(td -> {
-                        if (!td.hasClass("cb-srs-pnts-name")) {
-                            points.add(td.text());
-                        }
-                    });
-//                    System.out.println(points);
-                    pointTable.add(points);
-                }
+            // Fetch the HTML document from the URL
+            Document document = Jsoup.connect(rankingUrl).get();
+
+            // Select the elements that contain the ranking information
+            Elements rows = document.select("div.cb-col.cb-col-100.cb-font-14.cb-lst-itm.text-center");
+
+            // Iterate through each player row and extract the ranking data
+            for (Element row : rows) {
+                // Ensure the row has at least 4 child elements
+
+                    List<String> playerData = new ArrayList<>();
+
+                    // Extract the player's position (1st child element)
+                    String position = row.child(0).text();
+
+                    // Extract the player's name (2nd child element)
+                    String playerName = row.child(1).text();
+
+                    // Extract the country name (3rd child element)
+                    String country = row.child(2).text();
 
 
-            });
 
-            System.out.println(pointTable);
+                    // Add extracted data to the list
+                    playerData.add(position);
+                    playerData.add(playerName);
+                    playerData.add(country);
+
+                    ranking.add(playerData);
+
+            }
+
+            // Print the rankings (for debugging purposes)
+            System.out.println(ranking);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return pointTable;
+
+        return ranking;
     }
+
 
     @Override
     public List<Match> getAllMatches() {

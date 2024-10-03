@@ -18,7 +18,7 @@ export class ApiService {
    getAllMatches(){
     return this.httpClient.get(`${environment.apiUrl}/cricket`)
    }
-   getCWC2023PointTable(){
-    return this.httpClient.get(`${environment.apiUrl}/cricket/point-table`)
+   getICCRankingTable(){
+    return this.httpClient.get(`${environment.apiUrl}/cricket/ranking`)
    }
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 public interface CricketService {
 
     List<Match> getLiveMatchScores();
-    List<List<String>> getCWC2023PointTable();
+    List<List<String>> getIccRanking() ;
 
     List<Match> getAllMatches();
 

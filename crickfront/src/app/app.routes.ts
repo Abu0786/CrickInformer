@@ -22,7 +22,7 @@ export const routes: Routes = [
     {
         path:"point-table",
         component:PointTableComponent,
-        title:'CWC2023 Point Table'
+        title:'ICC Ranking Men'
     },
     {   
         path:"all-matches",
